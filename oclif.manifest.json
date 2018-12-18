@@ -1,0 +1,1 @@
+{"version":"0.0.0","commands":{"deploy":{"id":"deploy","description":"Deploy\n...\nDeploys services within this monorepo.\n","pluginName":"portmono","pluginType":"core","aliases":[],"flags":{},"args":[]},"list":{"id":"list","description":"List\n...\nLists services within this monorepo.\n","pluginName":"portmono","pluginType":"core","aliases":[],"flags":{},"args":[]}}}

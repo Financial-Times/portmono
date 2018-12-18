@@ -1,0 +1,58 @@
+{
+  "name": "portmono",
+  "description": "A monorepo deployment utility: A portmanteau of \"port\" and \"mono\"",
+  "version": "0.0.0",
+  "author": "Alex Wilson @antoligy",
+  "bin": {
+    "portmono": "./bin/run"
+  },
+  "bugs": "https://github.com/financial-times/portmono/issues",
+  "dependencies": {
+    "@oclif/command": "^1.5.6",
+    "@oclif/config": "^1.9.0",
+    "@oclif/plugin-help": "^2.1.4",
+    "heroku-client": "^3.0.7",
+    "netrc-parser": "^3.1.6",
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1.19.5",
+    "@oclif/test": "^1.2.2",
+    "chai": "^4.2.0",
+    "eslint": "^5.10.0",
+    "eslint-config-oclif": "^3.1.0",
+    "globby": "^8.0.1",
+    "mocha": "^5.2.0",
+    "nyc": "^13.0.1"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json",
+    "/src"
+  ],
+  "homepage": "https://github.com/financial-times/portmono",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "oclif": {
+    "commands": "./src/commands",
+    "bin": "portmono",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "antoligy/portmono",
+  "scripts": {
+    "postpublish": "rm -f oclif.manifest.json",
+    "posttest": "eslint .",
+    "prepublish": "oclif-dev manifest && oclif-dev readme",
+    "test": "nyc mocha --forbid-only \"test/**/*.test.js\"",
+    "version": "oclif-dev readme && git add README.md"
+  }
+}

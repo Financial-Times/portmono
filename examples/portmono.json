@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "deploy": [
+      {
+          "type": "heroku",
+          "src": "./foo/bar",
+          "app": "hello-world"
+      }
+  ]
+}
