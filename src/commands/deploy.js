@@ -1,11 +1,15 @@
-const path = require('path')
-const os = require('os')
-const fs = require('fs')
 const {Command} = require('@oclif/command')
+const ConfigReader = require('../config')
 
 class DeployCommand extends Command {
   async run() {
-    const configFile = JSON.parse(fs.readFileSync(path.resolve('./portmono.json')))
+    const configReader = new ConfigReader()
+    const configFile = configReader.read()
+
+    if (!configFile.deploy) {
+      this.log('Nothing to deploy!')
+      return
+    }
 
     configFile.deploy.forEach(serviceConfig => {
       try {
@@ -22,15 +26,13 @@ class DeployCommand extends Command {
                 try {
                   herokuDeploy.deploy()
                 } catch (err) {
-                  console.error(`Error occurred for ${serviceName}:`, err.message)
+                  this.error(`Error occurred for ${serviceName}:`, err.message)
                 }
-
-                // console.log(`git subtree push --prefix ${servicePath} heroku-${serviceName} master --force`)
             }
             break;
         }
       } catch (err) {
-        console.error(err)
+        this.error(err)
       }
     })
 
