@@ -10,6 +10,7 @@ class HerokuDeploy extends Deploy {
       this.heroku = new Heroku({ token: this.herokuToken })
       this.appName = opts.appName
       this.directory = opts.directory
+      this.force = force
     }
 
     async deploy() {
@@ -19,7 +20,7 @@ class HerokuDeploy extends Deploy {
         const app = await this.getApp()
         const gitRemote = `heroku-${this.appName}`
         await git.RemoteCreate(gitRemote, app.git_url)
-        await git.SubtreePush(this.directory, gitRemote, 'master')
+        await git.SubtreePush(this.directory, gitRemote, 'master', '--force')
       } catch (err) {
         throw new Error(err.message)
       }

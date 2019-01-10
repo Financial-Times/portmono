@@ -1,8 +1,11 @@
-const {Command} = require('@oclif/command')
+const {Command, flags} = require('@oclif/command')
 const ConfigReader = require('../config')
 
 class DeployCommand extends Command {
   async run() {
+    const {flags} = this.parse(DeployCommand)
+    const force = (flags.force === true)
+
     const configReader = new ConfigReader()
     const configFile = configReader.read()
 
@@ -21,7 +24,8 @@ class DeployCommand extends Command {
                 const HerokuDeploy = require('../deploy/heroku')
                 const herokuDeploy = new HerokuDeploy({
                   appName: serviceName,
-                  directory: servicePath
+                  directory: servicePath,
+                  force
                 })
                 try {
                   herokuDeploy.deploy()
@@ -37,6 +41,10 @@ class DeployCommand extends Command {
     })
 
   }
+}
+
+DeployCommand.flags = {
+  force: flags.boolean({char: 'f'})
 }
 
 DeployCommand.description = `Deploy

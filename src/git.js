@@ -26,8 +26,8 @@ git.RemoteList = async function ListRemotes() {
       .then((remotes) => remotes.trim().split('\n').map((r) => r.split(/\s/)))
 }
 
-git.SubtreePush = async function SubtreePush(prefix, remote, branch) {
-  return git(['subtree', 'push', '--prefix', path.relative('.', prefix), remote, branch])
+git.SubtreePush = async function SubtreePush(prefix, remote, branch, ...args) {
+  return git(['subtree', 'push', '--prefix', path.relative('.', prefix), remote, branch, ...args])
 }
 
 git.inGitRepo = async function inGitRepo() {
