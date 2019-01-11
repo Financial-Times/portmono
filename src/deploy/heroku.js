@@ -22,7 +22,7 @@ class HerokuDeploy extends Deploy {
         await git.RemoteCreate(gitRemote, app.git_url)
 
         const subtreePushArguments = [this.directory, gitRemote, 'master']
-        if (force) {
+        if (this.force) {
           subtreePushArguments.push('--force')
         }
         await git.SubtreePush(...subtreePushArguments)
