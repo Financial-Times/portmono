@@ -23,7 +23,7 @@ class HerokuDeploy extends Deploy {
 
         const subtreePushArguments = [this.directory, gitRemote, 'master']
         if (this.force) {
-          subtreePushArguments.push('--force')
+          subtreePushArguments.push(true)
         }
         await git.SubtreePush(...subtreePushArguments)
       } catch (err) {
