@@ -5,6 +5,7 @@ class DeployCommand extends Command {
   async run() {
     const {flags} = this.parse(DeployCommand)
     const force = (flags.force === true)
+    const version = flags.version || 'staging'
 
     const configReader = new ConfigReader()
     const configFile = configReader.read()
@@ -16,7 +17,7 @@ class DeployCommand extends Command {
 
     configFile.deploy.forEach(serviceConfig => {
       try {
-        const serviceName = serviceConfig.name || serviceConfig.app
+        const serviceName = serviceConfig.name || serviceConfig.apps[version]
         const servicePath = serviceConfig.src
 
         switch (serviceConfig.type) {
