@@ -1,9 +1,3 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config({
-    path: '.env',
-  })
-}
-
 const { Command } = require('@oclif/command')
 const Heroku = require('heroku-client')
 

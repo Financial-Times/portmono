@@ -1,18 +1,19 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config({
-    path: '.env',
-  })
-}
-
 const {Command, flags} = require('@oclif/command')
 const Heroku = require('heroku-client')
-const pipelines = require('../config/pipelines')
+const ConfigReader = require('../config')
 
 class HerokuPromoteCommand extends Command {
   async run() {
     const {flags} = this.parse(HerokuPromoteCommand)
+    const configReader = new ConfigReader()
+    const configFile = configReader.read()
+
+    if (!configFile.pipelines) {
+      this.log('Nothing to deploy!')
+      return
+    }
     try {
-      const config = pipelines[flags.pipeline]
+      const config = configFile.pipelines[flags.pipeline]
       this.heroku = new Heroku({ token: process.env.HEROKU_API_TOKEN })
       this.heroku.post('/pipeline-promotions', {
         body: config
