@@ -1,5 +1,6 @@
 const path = require('path')
-const dotenv = require('dotenv')
+const {existsSync, readFileSync} = require('fs')
+const {parse} = require('dotenv')
 const ConfigReader = require('../config')
 
 const pm2EcosystemFormat = {
@@ -33,10 +34,27 @@ class PM2Ecosystem {
         const name = appConfig.name || appConfig.app
         const cwd = path.resolve(appConfig.src)
 
-        // Allow conditionally overriding any variables via a dotenv.
-        const env = Object.assign({}, pm2Service.env, dotenv.parse(`${cwd}/.env`))
+        const templateEnv = Object.assign({}, pm2Service.env)
+        const globalEnv = {} // Global variables (specified for _this_ process)
+        const localEnv = {} // Used for local overrides
 
-        // Attempt to read the PORT variable from the master process (this)
+        // Attempt to load in local-overrides.
+        const localDotEnvFile = path.resolve(cwd, '.env')
+        if (existsSync(localDotEnvFile)) {
+          Object.assign(localEnv, parse(readFileSync(path.resolve(cwd, '.env'))))
+        }
+
+        // Override variables globally from the master process (this)
+        // Format: `a-service-name` => `a_service_name_VARIABLE`
+        const globalOverride = name.replace('-', '_')
+        Object.keys(process.env)
+          .filter(key => key.startsWith(globalOverride))
+          .forEach(key => globalEnv[key.replace(globalOverride, '')] = process.env[key])
+
+        // Squash templated environment, global environment and local environment.
+        const env = Object.assign({}, localEnv, globalEnv, templateEnv)
+
+        // Explicitly read the PORT variable from the master process (this)
         // Format: `a-service-name` => `a_service_name_PORT`
         env.PORT = process.env[`${name.replace('-', '_')}_PORT`] || env.PORT
 
