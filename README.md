@@ -38,7 +38,7 @@ $ npm install -g portmono
 $ portmono COMMAND
 running command...
 $ portmono (-v|--version|version)
-portmono/0.0.0 darwin-x64 node-v11.6.0
+portmono/0.0.0 linux-x64 node-v10.13.0
 $ portmono --help [COMMAND]
 USAGE
   $ portmono COMMAND
@@ -49,6 +49,9 @@ USAGE
 <!-- commands -->
 * [`portmono deploy`](#portmono-deploy)
 * [`portmono help [COMMAND]`](#portmono-help-command)
+* [`portmono heroku-apps`](#portmono-heroku-apps)
+* [`portmono heroku-pipelines`](#portmono-heroku-pipelines)
+* [`portmono heroku-promote`](#portmono-heroku-promote)
 * [`portmono list`](#portmono-list)
 * [`portmono validate`](#portmono-validate)
 
@@ -59,6 +62,9 @@ Deploy
 ```
 USAGE
   $ portmono deploy
+
+OPTIONS
+  -f, --force
 
 DESCRIPTION
   ...
@@ -83,6 +89,42 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4/src/commands/help.ts)_
+
+## `portmono heroku-apps`
+
+List Heroku apps linked to a given API Key
+
+```
+USAGE
+  $ portmono heroku-apps
+```
+
+_See code: [src/commands/heroku-apps.js](https://github.com/antoligy/portmono/blob/v0.0.0/src/commands/heroku-apps.js)_
+
+## `portmono heroku-pipelines`
+
+List Heroku pipelines linked to a given API Key
+
+```
+USAGE
+  $ portmono heroku-pipelines
+```
+
+_See code: [src/commands/heroku-pipelines.js](https://github.com/antoligy/portmono/blob/v0.0.0/src/commands/heroku-pipelines.js)_
+
+## `portmono heroku-promote`
+
+Promote a Heroku application within a pipeline
+
+```
+USAGE
+  $ portmono heroku-promote
+
+OPTIONS
+  -p, --pipeline=pipeline  Pipeline to promote
+```
+
+_See code: [src/commands/heroku-promote.js](https://github.com/antoligy/portmono/blob/v0.0.0/src/commands/heroku-promote.js)_
 
 ## `portmono list`
 
