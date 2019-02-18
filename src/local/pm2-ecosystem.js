@@ -7,6 +7,13 @@ const pm2EcosystemFormat = {
   apps : []
 }
 
+//Shared env vars
+const sharedEnvVars = {
+  PORT: 0, // Let node allocate a random port.
+  NODE_ENV: 'development',
+  DYNO: 'x'
+}
+
 const pm2Service = {
   name: '<<service>>',
   cwd: '<<path>>',
@@ -15,10 +22,7 @@ const pm2Service = {
   autorestart: true,
   watch: true,
   max_memory_restart: '1G',
-  env: {
-    PORT: 0, // Let node allocate a random port.
-    NODE_ENV: 'development'
-  }
+  env: sharedEnvVars
 }
 
 class PM2Ecosystem {
