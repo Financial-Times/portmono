@@ -79,13 +79,6 @@ class HerokuDeploy extends Deploy {
 
     return result;
   }
-
-  withGitAuth(url) {
-    const rewritten = new URL(url)
-    rewritten.username = 'heroku'
-    rewritten.password = this.herokuToken
-    return rewritten.toString()
-  }
 }
 
 module.exports = HerokuDeploy
