@@ -64,7 +64,7 @@ USAGE
   $ portmono deploy
 
 OPTIONS
-  -f, --force
+  -f, --force, -s --stage=stage Stage to deploy to (development, staging, production)
 
 DESCRIPTION
   ...
