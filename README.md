@@ -31,6 +31,12 @@ const {PM2Ecosystem} = require('portmono')
 module.exports = PM2Ecosystem.ecosystem()
 ```
 
+Before deploying to Heroku from console:
+
+```
+export HEROKU_API_TOKEN=XYZ
+```
+
 # Usage
 <!-- usage -->
 ```sh-session
