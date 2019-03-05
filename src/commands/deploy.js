@@ -5,6 +5,7 @@ class DeployCommand extends Command {
   async run() {
     const {flags} = this.parse(DeployCommand)
     const force = (flags.force === true)
+    const stage = flags.stage ? flags.stage : 'development'
 
     const configReader = new ConfigReader()
     const configFile = configReader.read()
@@ -20,19 +21,20 @@ class DeployCommand extends Command {
         const servicePath = serviceConfig.src
 
         switch (serviceConfig.type) {
-            case 'heroku': {
-                const HerokuDeploy = require('../deploy/heroku')
-                const herokuDeploy = new HerokuDeploy({
-                  appName: serviceName,
-                  directory: servicePath,
-                  force
-                })
-                try {
-                  herokuDeploy.deploy()
-                } catch (err) {
-                  this.error(`Error occurred for ${serviceName}:`, err.message)
-                }
+          case 'heroku': {
+            const HerokuDeploy = require('../deploy/heroku')
+            const herokuDeploy = new HerokuDeploy({
+              appName: serviceName,
+              directory: servicePath,
+              stage,
+              force
+            })
+            try {
+              herokuDeploy.deploy()
+            } catch (err) {
+              this.error(`Error occurred for ${serviceName}:`, err.message)
             }
+          }
             break;
         }
       } catch (err) {
@@ -44,7 +46,8 @@ class DeployCommand extends Command {
 }
 
 DeployCommand.flags = {
-  force: flags.boolean({char: 'f'})
+  force: flags.boolean({char: 'f'}),
+  stage: flags.string({char: 's'}),
 }
 
 DeployCommand.description = `Deploy
