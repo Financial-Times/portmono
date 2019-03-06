@@ -4,7 +4,8 @@ const HerokuClient = require('../heroku-client')
 class HerokuAppsCommand extends Command {
   async run() {
     this.heroku = new HerokuClient({ token: process.env.HEROKU_API_TOKEN })
-    this.heroku.listApps()
+    const apps = await this.heroku.listApps()
+    console.log(apps)
   }
 }
 

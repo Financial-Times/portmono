@@ -70,7 +70,8 @@ USAGE
   $ portmono deploy
 
 OPTIONS
-  -f, --force, -s --stage=stage Stage to deploy to (development, staging, production)
+  -f, --force
+  -s, --stage=stage
 
 DESCRIPTION
   ...
@@ -98,7 +99,7 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4
 
 ## `portmono heroku-apps`
 
-List Heroku apps linked to a given API Key
+List Heroku apps linked to a given API Key, useful to get ids for managing apps
 
 ```
 USAGE
@@ -109,7 +110,7 @@ _See code: [src/commands/heroku-apps.js](https://github.com/antoligy/portmono/bl
 
 ## `portmono heroku-pipelines`
 
-List Heroku pipelines linked to a given API Key
+List Heroku pipelines linked to a given API Key, useful to get ids for managing apps
 
 ```
 USAGE
@@ -127,16 +128,9 @@ USAGE
   $ portmono heroku-promote
 
 OPTIONS
-  -a, --app=app App to promote
-  -s --source=stage Specifies which stage the app is being promoted from
-  -t --target=stage Specifies which stage the app is being promoted to - If omitted, the next stage in the pipeline will be selected automatically
-  
-EXAMPLES 
-  Promote the development app within the fdi-content pipeline to staging
-  portmono heroko-promote -a=fdi-content -s=development t=staging
-  
-  Promote the staging app within the fdi-content pipeline to production (Non-explicit)
-  portmono heroko-promote -a=fdi-content s=staging
+  -a, --app=app        App to promote
+  -s, --source=source  Source stage
+  -t, --target=target  Target stage
 ```
 
 _See code: [src/commands/heroku-promote.js](https://github.com/antoligy/portmono/blob/v0.0.0/src/commands/heroku-promote.js)_

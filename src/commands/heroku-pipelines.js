@@ -4,7 +4,8 @@ const HerokuClient = require('../heroku-client')
 class HerokuPipelinesCommand extends Command {
   async run() {
     this.heroku = new HerokuClient({ token: process.env.HEROKU_API_TOKEN })
-    this.heroku.listPipelines()
+    const pipelines = this.heroku.listPipelines()
+    console.log(pipelines)
   }
 }
 

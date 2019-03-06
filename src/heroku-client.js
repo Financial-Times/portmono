@@ -112,25 +112,15 @@ class HerokuClient extends Heroku {
   /**
    * Return an array of available apps
    */
-  listApps() {
-    this.get('/apps').then(apps => {
-      console.log(apps)
-    })
-    .catch(error => {
-      console.log(error)
-    })
+  async listApps() {
+    return this.get('/apps')
   }
 
   /**
    * Return an array of available pipelines
    */
-  listPipelines() {
-    this.get('/pipelines').then(pipelines => {
-      console.log(pipelines)
-    })
-    .catch(error => {
-      console.log(error)
-    })
+  async listPipelines() {
+    return this.get('/pipelines')
   }
 }
 
