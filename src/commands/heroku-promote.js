@@ -49,6 +49,7 @@ class HerokuPromoteCommand extends Command {
    * @returns {string}
    */
   getTargetStage(sourceStage, targetStage = null) {
+    //  If a targetStage has been manually provided, and is valid, use it...
     if (targetStage) {
       if (this.validStages().includes(targetStage)) {
         return targetStage
@@ -57,6 +58,7 @@ class HerokuPromoteCommand extends Command {
       throw('Invalid target stage ' + targetStage)
     }
 
+    //  Otherwise, try and automatically retrieve the next stage in the pipeline, if it exists
     const sourceIndex = this.validStages().indexOf(sourceStage)
 
     if (this.validStages()[sourceIndex + 1]) {
