@@ -30,7 +30,6 @@ describe("heroku-client", () => {
   it('Should get an application id by stage', async() => {
     const appsInPipeline = [
         {
-        created_at: '2019-03-04T11:05:54Z',
         app: {
           id: 'a62cda64-4110-4bef-a773-38bc33c9a4f8'
         },
@@ -40,7 +39,6 @@ describe("heroku-client", () => {
           name: 'fdi-content'
         },
         stage: 'development',
-        updated_at: '2019-03-04T11:06:02Z'
       }
     ]
 
@@ -52,7 +50,6 @@ describe("heroku-client", () => {
   it('Should throw an exception when unable to retrieve an application id by stage', async() => {
     const appsInPipeline = [
       {
-        created_at: '2019-01-14T08:43:11Z',
         app: {id: '4fefcdff-3760-4fc3-9417-f28b28d3e224'},
         id: '000158d1-ffff-4af5-b9b8-54dbd7e87dab',
         pipeline:
@@ -61,7 +58,6 @@ describe("heroku-client", () => {
             name: 'fdi-content'
           },
         stage: 'staging',
-        updated_at: '2019-01-14T08:43:11Z'
       }
     ]
 
