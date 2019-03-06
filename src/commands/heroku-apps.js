@@ -1,15 +1,10 @@
-const { Command } = require('@oclif/command')
-const Heroku = require('heroku-client')
+const {Command} = require('@oclif/command')
+const HerokuClient = require('../heroku-client')
 
 class HerokuAppsCommand extends Command {
   async run() {
-    this.heroku = new Heroku({ token: process.env.HEROKU_API_TOKEN })
-    this.heroku.get('/apps').then(apps => {
-      console.log(apps)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    this.heroku = new HerokuClient({ token: process.env.HEROKU_API_TOKEN })
+    this.heroku.listApps()
   }
 }
 
