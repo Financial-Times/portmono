@@ -127,7 +127,16 @@ USAGE
   $ portmono heroku-promote
 
 OPTIONS
-  -p, --pipeline=pipeline  Pipeline to promote
+  -a, --app=app App to promote
+  -s --source=stage Specifies which stage the app is being promoted from
+  -t --target=stage Specifies which stage the app is being promoted to - If omitted, the next stage in the pipeline will be selected automatically
+  
+EXAMPLES 
+  Promote the development app within the fdi-content pipeline to staging
+  portmono heroko-promote -a=fdi-content -s=development t=staging
+  
+  Promote the staging app within the fdi-content pipeline to production (Non-explicit)
+  portmono heroko-promote -a=fdi-content s=staging
 ```
 
 _See code: [src/commands/heroku-promote.js](https://github.com/antoligy/portmono/blob/v0.0.0/src/commands/heroku-promote.js)_
