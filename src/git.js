@@ -31,7 +31,9 @@ git.SubtreePush = async function SubtreePush(prefix, remote, branch, force = fal
     let remoteBranch = remote+'-tmp'
     try {
       let subtreeHash = await git.SubtreeCreateBranch(path.relative('.', prefix), remoteBranch)
+      let gitSubtree = await git.bumpCommit(remoteBranch)
       let push = await git.SubtreeForcePush(remote, remoteBranch, branch)
+      
     } catch (err) {
       console.log('Failed to push '+prefix+': '+err)
     } finally {
@@ -51,8 +53,18 @@ git.SubtreeDeleteBranch = async function SubtreeDeleteBranch(branch) {
   return git(['branch', '-D', branch])
 }
 
+git.bumpCommit = async function(branch){
+  let lastBranch = git(["rev-parse", "--abbrev-ref", "HEAD"])
+  git(["checkout", branch])
+  let date = new Date()
+  let commitHash = git(['commit', '--allow-empty', '-m', `"${date.getTime()}"`])
+  git(["checkout", lastBranch])
+  return commitHash
+
+}
+
 git.SubtreeForcePush = async function SubtreeForcePush(remote, localBranch, remoteBranch) {
-  return git(['push', '-f', remote, localBranch+':'+remoteBranch])
+  return git(['push', '-f', -'m', remote, localBranch+':'+remoteBranch])
 }
 
 git.inGitRepo = async function inGitRepo() {
