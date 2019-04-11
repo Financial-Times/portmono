@@ -53,7 +53,7 @@ class PM2Ecosystem {
         const globalOverride = name.replace('-', '_')
         Object.keys(process.env)
           .filter(key => key.startsWith(globalOverride))
-          .forEach(key => globalEnv[key.replace(globalOverride, '')] = process.env[key])
+          .forEach(key => globalEnv[key.replace(`${globalOverride}_`, '')] = process.env[key])
 
         // Squash templated environment, global environment and local environment.
         const env = Object.assign({}, localEnv, globalEnv, templateEnv)
