@@ -62,6 +62,11 @@ class PM2Ecosystem {
         // Format: `a-service-name` => `a_service_name_PORT`
         env.PORT = process.env[`${name.replace('-', '_')}_PORT`] || env.PORT
 
+        const sharedOverride = 'shared_'
+        Object.keys(process.env)
+          .filter(key => key.startsWith(sharedOverride))
+          .forEach(key => env[key.replace(`${sharedOverride}`, '')] = process.env[key])
+
         // Finally merge everything into a normal pm2 config file.
         return Object.assign({}, pm2Service, {name, cwd, env})
       })
