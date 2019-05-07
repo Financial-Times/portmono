@@ -34,7 +34,9 @@ class HerokuDeploy extends Deploy {
         if (this.force) {
           subtreePushArguments.push(true)
         }
-        await git.SubtreePush(...subtreePushArguments)
+        const res = await git.SubtreePush(...subtreePushArguments)
+        //Return if the deploy contained a valid response or not
+        return res.test(/Verifying\s*deploy\s*\.{3}\s*done/gm)
       }
     } catch (err) {
       throw new Error(err.message)
