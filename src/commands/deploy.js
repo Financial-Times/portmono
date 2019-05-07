@@ -75,8 +75,6 @@ class DeployCommand extends Command {
   }
 }
 
-
-
 DeployCommand.flags = {
   force: flags.boolean({char: 'f'}),
   stage: flags.string({char: 's'}),
