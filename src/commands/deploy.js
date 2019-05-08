@@ -25,13 +25,13 @@ class DeployCommand extends Command {
 
     for(const serviceConfig of configFile.deploy) {
       try {
-        let serviceName = serviceConfig.name || serviceConfig.app
-        let servicePath = serviceConfig.src
+        const serviceName = serviceConfig.name || serviceConfig.app
+        const servicePath = serviceConfig.src
 
         switch (serviceConfig.type) {
           case 'heroku': {
-            let HerokuDeploy = require('../deploy/heroku')
-            let herokuDeploy = new HerokuDeploy({
+            const HerokuDeploy = require('../deploy/heroku')
+            const herokuDeploy = new HerokuDeploy({
               appName: serviceName,
               directory: servicePath,
               stage,
