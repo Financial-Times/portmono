@@ -9,8 +9,6 @@ class DeployCommand extends Command {
   }
 
   async run() {
-    
-    let hasDeployFailed = false
     const {flags} = this.parse(DeployCommand)
     const force = (flags.force === true)
     const stage = flags.stage ? flags.stage : 'development'
@@ -38,8 +36,8 @@ class DeployCommand extends Command {
               force
             })
             try {
-              let deployState = await herokuDeploy.deploy()
-              this.addDeployState(serviceName, deployState)
+              await herokuDeploy.deploy()
+              this.addDeployState(serviceName, herokuDeploy.getDeployStatus())
             } catch (err) {
               this.addDeployState(serviceName, false)
               this.warn(`Error occurred for ${serviceName}: ${err.toString()}`)

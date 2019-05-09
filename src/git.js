@@ -26,21 +26,13 @@ git.RemoteList = async function ListRemotes() {
     .then((remotes) => remotes.trim().split('\n').map((r) => r.split(/\s/)))
 }
 
-git.SubtreePush = async function SubtreePush(prefix, remote, branch, force = false) {
-  if (force) {
-    let remoteBranch = remote+'-tmp'
-    try {
-      let subtreeHash = await git.SubtreeCreateBranch(path.relative('.', prefix), remoteBranch)
-      let push = await git.SubtreeForcePush(remote, remoteBranch, branch)
-    } catch (err) {
-      console.log('Failed to push '+prefix+': '+err)
-    } finally {
-      let result = await git.SubtreeDeleteBranch(remoteBranch)
-      console.log(result)
-    }
-  } else {
-    return git(['subtree', 'push', '--prefix', path.relative('.', prefix), remote, branch])
-  }
+git.SubtreePush = async function SubtreePush(prefix, remote, branch) {
+  return git(['subtree', 'push', '--prefix', path.relative('.', prefix), remote, branch])
+}
+
+git.createTemporaryBranch = async function pushTempBranch(prefix, remote){
+  let remoteBranch = remote+'-tmp'
+  return git.SubtreeCreateBranch(path.relative('.', prefix), remoteBranch)
 }
 
 git.SubtreeCreateBranch = async function SubtreeCreateBranch(prefix, branch) {
