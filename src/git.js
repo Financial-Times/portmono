@@ -32,7 +32,9 @@ git.SubtreePush = async function SubtreePush(prefix, remote, branch) {
 
 git.createTemporaryBranch = async function pushTempBranch(prefix, remote){
   let remoteBranch = remote+'-tmp'
-  return git.SubtreeCreateBranch(path.relative('.', prefix), remoteBranch)
+  let subtreeHash = await git.SubtreeCreateBranch(path.relative('.', prefix), remoteBranch)
+
+  return remoteBranch
 }
 
 git.SubtreeCreateBranch = async function SubtreeCreateBranch(prefix, branch) {
