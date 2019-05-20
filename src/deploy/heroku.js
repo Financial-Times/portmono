@@ -12,6 +12,7 @@ class HerokuDeploy extends Deploy {
     this.directory = opts.directory
     this.force = opts.force || false
     this.stage = opts.stage || 'development'
+    this.deployStatus = false
   }
 
   async deploy() {
@@ -30,11 +31,32 @@ class HerokuDeploy extends Deploy {
         const gitRemote = `heroku-${actualApp.name}`
         await git.RemoteCreate(gitRemote, actualApp.git_url)
 
-        const subtreePushArguments = [this.directory, gitRemote, 'master']
-        if (this.force) {
-          subtreePushArguments.push(true)
+        const subtreePushArguments = []
+        
+        //  If we are forcing a deploy...
+        if(this.force){
+          //  Create a temp remote branch
+          const remoteBranch = await git.createTemporaryBranch(this.directory, gitRemote)
+          //  Try to force push the branch 
+          try {
+            const result = await git.SubtreeForcePush(gitRemote, remoteBranch, 'master')
+            console.log(result)
+            //  Mark the deploy as having succeeded
+            this.deployStatus = true
+          } catch (err) {
+            //  In the event that the build in heroku fails and is rejected...
+            console.log(`Failed to push to ${gitRemote} ${remoteBranch}: ${err}`)
+          } finally {
+            //  Always clean up the temp branch
+            const result = await git.SubtreeDeleteBranch(remoteBranch)
+            console.log(result)
+          } 
+        } else {
+          //Try to do a standard subtree push
+          const result = await git.SubtreePush(this.directory, gitRemote, 'master')
+          console.log(result)
+          this.deployStatus = true
         }
-        await git.SubtreePush(...subtreePushArguments)
       }
     } catch (err) {
       throw new Error(err.message)
@@ -78,6 +100,10 @@ class HerokuDeploy extends Deploy {
     })
 
     return result;
+  }
+
+  getDeployStatus(){
+    return this.deployStatus
   }
 }
 
