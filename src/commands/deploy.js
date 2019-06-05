@@ -12,8 +12,7 @@ class DeployCommand extends Command {
     const {flags} = this.parse(DeployCommand)
     this.force = (flags.force === true)
     this.stage = flags.stage ? flags.stage : 'development'
-    const singleApp = flags['single-app']? flags['single-app'] : false
-
+    this.filter = flags.filter ? new RegExp(flags.filter) : false
     const configReader = new ConfigReader()
     const configFile = configReader.read()
 
@@ -22,21 +21,13 @@ class DeployCommand extends Command {
       return
     }
     
-    if(singleApp !== false){
-      this.log(`Starting single app deploy for ${singleApp}`)
-      const singleAppToDeploy = configFile.deploy.filter((serviceConfig) => {
-        return serviceConfig.app === singleApp
-      }).shift()
-
-      if(singleAppToDeploy === undefined){
-        this.error(`App ${singleApp} not found in portmono.json!`)
-      }
-
-      await this.runDeploy(singleAppToDeploy)
-      return
-    }
-
-    for(const serviceConfig of configFile.deploy) {
+    const toDeploy = this.filter === false 
+          ? configFile.deploy 
+          : configFile.deploy.filter((serviceConfig) => {
+            return this.filter.test(serviceConfig.app)
+          })
+    
+    for(const serviceConfig of toDeploy) {
       await this.runDeploy(serviceConfig)
     }
     
@@ -95,7 +86,7 @@ class DeployCommand extends Command {
 DeployCommand.flags = {
   force: flags.boolean({char: 'f'}),
   stage: flags.string({char: 's'}),
-  'single-app': flags.string()
+  filter: flags.string()
 }
 
 DeployCommand.description = `Deploy

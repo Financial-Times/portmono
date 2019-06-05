@@ -72,7 +72,7 @@ USAGE
 OPTIONS
   -f, --force
   -s, --stage=stage
-  --single-app=single-app
+  --filter=filter
 
 DESCRIPTION
   ...
