@@ -44,7 +44,7 @@ $ npm install -g portmono
 $ portmono COMMAND
 running command...
 $ portmono (-v|--version|version)
-portmono/0.0.0 linux-x64 node-v10.13.0
+portmono/0.0.0 darwin-x64 node-v10.13.0
 $ portmono --help [COMMAND]
 USAGE
   $ portmono COMMAND
@@ -70,7 +70,9 @@ USAGE
   $ portmono deploy
 
 OPTIONS
-  -f, --force, -s --stage=stage Stage to deploy to (development, staging, production)
+  -f, --force
+  -s, --stage=stage
+  --filter=filter
 
 DESCRIPTION
   ...
@@ -98,7 +100,7 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4
 
 ## `portmono heroku-apps`
 
-List Heroku apps linked to a given API Key
+List Heroku apps linked to a given API Key, useful to get ids for managing apps
 
 ```
 USAGE
@@ -109,7 +111,7 @@ _See code: [src/commands/heroku-apps.js](https://github.com/antoligy/portmono/bl
 
 ## `portmono heroku-pipelines`
 
-List Heroku pipelines linked to a given API Key
+List Heroku pipelines linked to a given API Key, useful to get ids for managing apps
 
 ```
 USAGE

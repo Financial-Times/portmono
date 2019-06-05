@@ -10,9 +10,9 @@ class DeployCommand extends Command {
 
   async run() {
     const {flags} = this.parse(DeployCommand)
-    const force = (flags.force === true)
-    const stage = flags.stage ? flags.stage : 'development'
-
+    this.force = (flags.force === true)
+    this.stage = flags.stage ? flags.stage : 'development'
+    this.filter = flags.filter ? new RegExp(flags.filter) : false
     const configReader = new ConfigReader()
     const configFile = configReader.read()
 
@@ -20,34 +20,15 @@ class DeployCommand extends Command {
       this.log('Nothing to deploy!')
       return
     }
-
-    for(const serviceConfig of configFile.deploy) {
-      try {
-        const serviceName = serviceConfig.name || serviceConfig.app
-        const servicePath = serviceConfig.src
-
-        switch (serviceConfig.type) {
-          case 'heroku': {
-            const HerokuDeploy = require('../deploy/heroku')
-            const herokuDeploy = new HerokuDeploy({
-              appName: serviceName,
-              directory: servicePath,
-              stage,
-              force
-            })
-            try {
-              await herokuDeploy.deploy()
-              this.addDeployState(serviceName, herokuDeploy.getDeployStatus())
-            } catch (err) {
-              this.addDeployState(serviceName, false)
-              this.warn(`Error occurred for ${serviceName}: ${err.toString()}`)
-            }
-          }
-            break;
-        }
-      } catch (err) {
-        this.error(err)
-      }
+    
+    const toDeploy = this.filter === false 
+          ? configFile.deploy 
+          : configFile.deploy.filter((serviceConfig) => {
+            return this.filter.test(serviceConfig.app)
+          })
+    
+    for(const serviceConfig of toDeploy) {
+      await this.runDeploy(serviceConfig)
     }
     
     //Display a summary of all of the deploys that have been pushed
@@ -56,6 +37,35 @@ class DeployCommand extends Command {
     if(this.hasDeployFailed) {
       //If deploy has failed return a non zero status code
       this.error('Deploy failed!')
+    }
+  }
+
+  async runDeploy(serviceConfig){
+    try {
+      const serviceName = serviceConfig.name || serviceConfig.app
+      const servicePath = serviceConfig.src
+
+      switch (serviceConfig.type) {
+        case 'heroku': {
+          const HerokuDeploy = require('../deploy/heroku')
+          const herokuDeploy = new HerokuDeploy({
+            appName: serviceName,
+            directory: servicePath,
+            stage: this.stage,
+            force: this.force
+          })
+          try {
+            await herokuDeploy.deploy()
+            this.addDeployState(serviceName, herokuDeploy.getDeployStatus())
+          } catch (err) {
+            this.addDeployState(serviceName, false)
+            this.warn(`Error occurred for ${serviceName}: ${err.toString()}`)
+          }
+        }
+          break;
+      }
+    } catch (err) {
+      this.error(err)
     }
   }
 
@@ -76,6 +86,7 @@ class DeployCommand extends Command {
 DeployCommand.flags = {
   force: flags.boolean({char: 'f'}),
   stage: flags.string({char: 's'}),
+  filter: flags.string()
 }
 
 DeployCommand.description = `Deploy
