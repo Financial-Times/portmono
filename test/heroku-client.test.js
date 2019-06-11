@@ -1,7 +1,6 @@
-const expect = require("chai").expect;
+const expect = require("chai").expect
 const HerokuClient = require('../src/heroku-client')
-const herokuToken = 'abc'
-const herokuClient = new HerokuClient({token: herokuToken})
+const herokuClient = new HerokuClient()
 
 describe("HerokuClient", () => {
   const apps = [
