@@ -44,7 +44,7 @@ $ npm install -g portmono
 $ portmono COMMAND
 running command...
 $ portmono (-v|--version|version)
-portmono/0.0.0 linux-x64 node-v10.13.0
+portmono/0.0.0 darwin-x64 node-v10.13.0
 $ portmono --help [COMMAND]
 USAGE
   $ portmono COMMAND
@@ -71,7 +71,7 @@ USAGE
 
 OPTIONS
   -f, --force
-  -s --stage=stage Stage to deploy to (development, staging, production)
+  -s, --stage=stage
 
 DESCRIPTION
   ...
