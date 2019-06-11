@@ -8,7 +8,7 @@ class HerokuPipelinesCommand extends Command {
    */
   async run() {
     this.heroku = new HerokuClient({ token: process.env.HEROKU_API_TOKEN })
-    const pipelines = this.heroku.listPipelines()
+    const pipelines = await this.heroku.listPipelines()
     console.log(pipelines)
   }
 }
