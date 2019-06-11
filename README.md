@@ -72,7 +72,6 @@ USAGE
 OPTIONS
   -f, --force
   -s, --stage=stage
-  --filter=filter
 
 DESCRIPTION
   ...
@@ -129,7 +128,9 @@ USAGE
   $ portmono heroku-promote
 
 OPTIONS
-  -p, --pipeline=pipeline  Pipeline to promote
+  -a, --app=app        App to promote
+  -s, --source=source  Source stage
+  -t, --target=target  Target stage
 ```
 
 _See code: [src/commands/heroku-promote.js](https://github.com/antoligy/portmono/blob/v0.0.0/src/commands/heroku-promote.js)_
