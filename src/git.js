@@ -4,7 +4,8 @@ const path = require('path')
 
 async function git(args) {
   return new Promise(function (resolve, reject) {
-    exec('git', args, function (error, stdout, stderr) {
+    exec('git', args, { maxBuffer: 512 * 1024 * 1024 }, 
+         function (error, stdout, stderr) {
       process.stderr.write(stderr)
       if (error) return reject(error)
       resolve(stdout)
