@@ -8,7 +8,7 @@
   },
   "bugs": "https://github.com/financial-times/portmono/issues",
   "dependencies": {
-    "@oclif/command": "^1.5.6",
+    "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.9.0",
     "@oclif/plugin-help": "^2.1.4",
     "dotenv": "^6.2.0",
